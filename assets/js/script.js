@@ -11,7 +11,7 @@ function renderMovieData(data) {
 
     $("#card-section").html("<p class=\"subtitle is-3\">Your recommendations</p>");
 
-    let baseImageURL = "https://image.tmdb.org/t/p/w154";
+    let baseImageURL = "https://image.tmdb.org/t/p/w92";
 
     /*
         TMBD Poster Sizes
@@ -26,7 +26,7 @@ function renderMovieData(data) {
             ],
     */
 
-    let currentPage = data.page;
+    var currentPage = data.page;
     let totalPages = data.total_pages;
 
     $("#card-section").append("<p>Page: " + currentPage + " of " + totalPages + "</p>");
@@ -82,8 +82,13 @@ function renderMovieData(data) {
 }
 
 //  Fetch API Movie Data
-function getAPIMovieData(genreIDs) {
-    let movieAPI = "https://api.themoviedb.org/3/discover/movie?api_key=0d37b66cfda3facaf7d62b81d68fd669&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_date.gte=2000-01-01&primary_release_date.lte=2020-12-31&vote_average.gte=6&with_genres=" + genreIDs + "";
+function getAPIMovieData(genreIDs,currentPage) {
+    console.log(currentPage);
+    if (currentPage === "") {
+        currentPage = 1;
+    }
+    let movieAPI = "https://api.themoviedb.org/3/discover/movie?api_key=0d37b66cfda3facaf7d62b81d68fd669&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + currentPage +"&primary_release_date.gte=2000-01-01&primary_release_date.lte=2020-12-31&vote_average.gte=6&with_genres=" + genreIDs + "";
+    console.log(movieAPI);
     fetch(movieAPI)
         .then(function (response) {
             if (response.status !== 200) {
@@ -96,6 +101,13 @@ function getAPIMovieData(genreIDs) {
         });
 }
 
+function getAPIMovieDetails(){
+    let movieDetailAPI = "https://developers.themoviedb.org/3/movies/get-movie-details?api_key=0d37b66cfda3facaf7d62b81d68fd669&language=en-US&"
+}
+
+function changePage(currentPage) {
+
+}
 
 
 
