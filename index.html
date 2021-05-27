@@ -40,27 +40,26 @@
                 <p class="subtitle is-5 has-text-centered">Select a movie genre:</p> <!-- type size 4 -->
                 <div class="buttons is-block">
                     <!-- buttons for genres-->
-                    <button class="button is-link is-outlined is-fullwidth" id="genreButton"
-                        value="28,12">Action/Adventure</button>
-                    <button class="button is-link is-outlined is-fullwidth" id="genreButton2" value="35">Comedy</button>
-                    <button class="button is-link is-outlined is-fullwidth">Crime/Mystery</button>
-                    <button class="button is-link is-outlined is-fullwidth">Documentary</button>
-                    <button class="button is-link is-outlined is-fullwidth">Drama</button>
-                    <button class="button is-link is-outlined is-fullwidth">Family</button>
-                    <button class="button is-link is-outlined is-fullwidth">Horror/Thriller</button>
-                    <button class="button is-link is-outlined is-fullwidth">Musical</button>
-                    <button class="button is-link is-outlined is-fullwidth">Romance</button>
-                    <button class="button is-link is-outlined is-fullwidth">Sci-Fi</button>
-                    <button class="button is-primary is-outlined is-fullwidth">Surprise me!</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="28,12">Action/Adventure</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="35">Comedy</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="9648,80">Crime/Mystery</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="99">Documentary</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="18">Drama</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="10751">Family</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="27,53">Horror/Thriller</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="10402">Musical</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="10749">Romance</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="878">Sci-Fi</button>
+                    <button class="button is-primary is-outlined is-fullwidth" id="supriseMeButton">Surprise me!</button>
                 </div>
             </section>
             <!-- this section for main content  -->
-            <section class="column">
+            <section class="column" id="card-section">
                 <p class="subtitle is-3">Your recommendations</p>
                 <!-- card component from Bulma with placeholder text and dummy image-->
                 <div class="card mb-2">
-                    <div class="card-content">
-                        <div class="media">
+                    <div class="card-content media">
+                        <!-- <div class="media"> -->
                             <div class="media-left">
                                 <figure class="image is-100x150">
                                     <img src="https://via.placeholder.com/100x150" alt="Placeholder image">
@@ -75,30 +74,10 @@
                                     consectetur
                                     adipiscing elit. Phasellus nec iaculis mauris.</p>
                             </div>
-                        </div>
+                        <!-- </div> -->
                     </div>
                 </div>
-                <!-- 2nd card here -->
-                <div class="card">
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-left">
-                                <figure class="image is-100x150">
-                                    <img src="https://via.placeholder.com/100x150" alt="Placeholder image">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-4">2nd recommended movie title from API</p>
-                                <p class="content is-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing
-                                    elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet,
-                                    consectetur
-                                    adipiscing elit. Phasellus nec iaculis mauris.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
 
             </section>
         </div>
