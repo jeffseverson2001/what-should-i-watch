@@ -8,7 +8,7 @@
     <title>What Should I Watch</title>
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
 </head>
 <!-- adding class="has-text-black" makes text black -->
@@ -20,8 +20,11 @@
         <section class="hero is-info">
             <div class="hero-body">
                 <h1 class="title is-1">
-                    What Should I Watch?</h1>
-                <p class="subtitle is-4" id="subtitle">
+                    What Should I Watch? <span class="icon">
+                        <i class="fas fa-film"></i> <!-- trying to test out film icon-->
+                    </span>
+                </h1>
+                <p class="subtitle is-4">
                     <!-- type size 4 -->
                     Use this app to get movie recommendations based on your selected genre!
                 </p>
@@ -35,70 +38,40 @@
                 <p class="subtitle is-5 has-text-centered">Select a movie genre:</p> <!-- type size 5 -->
                 <div class="buttons is-block">
                     <!-- buttons for genres-->
-                    <button class="button is-link is-outlined is-fullwidth" id="action-genre">Action/Adventure</button>
-                    <button class="button is-link is-outlined is-fullwidth" id="comedy-genre">Comedy</button>
-                    <button class="button is-link is-outlined is-fullwidth" id="drama-genre">Drama</button>
-                    <button class="button is-link is-outlined is-fullwidth" id="family-genre">Family</button>
-                    <button class="button is-link is-outlined is-fullwidth" id="scifi-genre">Sci-Fi</button>
-                    <button class="button is-primary is-outlined is-fullwidth" id="surprise-genre">Surprise me!</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton"
+                        value="28,12">Action/Adventure</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="35">Comedy</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton"
+                        value="9648,80">Crime/Mystery</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="99">Documentary</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="18">Drama</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="10751">Family</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton"
+                        value="27,53">Horror/Thriller</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="10402">Musical</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="10749">Romance</button>
+                    <button class="button is-link is-outlined is-fullwidth genreButton" value="878">Sci-Fi</button>
+                    <button class="button is-primary is-outlined is-fullwidth" id="getDrinkButton">A Drink For Your
+                        Movie?</button>
                 </div>
             </section>
             <!-- this section for main content  -->
-            <section class="column">
-                <div class="subtitle is-3">Your recommendations</div>
-                <!-- card component from Bulma - text and image will be empty until API call - need to delete placeholder text and image at some point -->
-                <div class="card mb-2" id="card1">
-                    <div class="card-content">
-                        <div class="media" id="poster1">
-                            <div class="media-left">
-                                <figure class="image is-100x150">
-                                    <img src="https://via.placeholder.com/100x150" alt="Placeholder image">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-4" id="title1">Movie title</p>
-                                <p class="content is-6" id="overview1">Shrek, Fiona and Donkey set off to Far, Far Away to meet Fiona's mother and father. But not everyone is happy. Shrek and the King find it hard to get along, and there's tension in the marriage. The fairy godmother discovers that Shrek has married Fiona instead of her Son Prince Charming and sets about destroying their marriage. </p>
-                                <div class="buttons is-inline">
-                                    <!-- button to save to list -->
-                                    <button class="button is-link is-rounded" id="save-button">Save</button>
-                                </div>
-                            </div>
+            <section class="column" id="card-section">
+                <p class="subtitle is-3">Your recommendations</p>
+                <!-- card component from Bulma with placeholder text and dummy image-->
+                <div class="card mb-2">
+                    <div class="card-content media">
+                        <div class="media-content">
+                            <p class="title is-4">Select a Genre</p>
+                            <p class="content is-6">Click a genre button to the left to get a list of movies to watch.
+                            </p>
                         </div>
                     </div>
                 </div>
-                <!-- 2nd card here -->
-                <div class="card mb-2" id="card2">
-                    <div class="card-content">
-                        <div class="media" id="poster2">
-                            <div class="media-left">
-                                <figure class="image is-100x150">
-                                    <img src="https://via.placeholder.com/100x150" alt="Placeholder image">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-4" id="title2">2nd recommended movie title from API</p>
-                                <p class="content is-6" id="overview2">Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit.
-                                    Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing
-                                    elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit. </p>
-                                <div class="buttons is-inline">
-                                    <!-- button to save to list -->
-                                    <button class="button is-link is-rounded" id="save-button">Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="buttons is mt-3 is-flex is-justify-content-flex-end">
-                    <!-- buttons to display "my list" and stop music -->
-                    <button class="button is-link is-rounded" id="save-list">Go to saves</button>
-                    <button class="button is-danger is-rounded" id="stop-music">Stop music</button>
-                </div>
+                <div id="displayDrink" title=""></div>
             </section>
         </div>
     </main>
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script src="https://use.fontawesome.com/5843fe725a.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
