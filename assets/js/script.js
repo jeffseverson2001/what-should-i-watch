@@ -59,12 +59,12 @@ function renderMovieData(data) {
         mediaRightDiv.attr("class", "media-content");
 
         let saveButton = $("<button></button>");
-        saveButton.attr("class", "button is-link is-outlined");
+        saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap");
         saveButton.attr("value", data.results[i].id);
         saveButton.append("Save");
 
         let mediaTitle = $("<p></p>");
-        mediaTitle.attr("class", "title is-4");
+        mediaTitle.attr("class", "title is-4 is-flex is-justify-content-space-between");
         mediaTitle.append(data.results[i].title);
 
         let mediaTitleLink = $("<a></a>");
