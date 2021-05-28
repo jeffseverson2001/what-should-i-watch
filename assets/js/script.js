@@ -2,6 +2,8 @@
 let buttonBlock = $(".buttons");
 let drinkDiv = $("#displayDrink");
 
+
+
 //  Place Movie Data On Page
 function renderMovieData(data) {
     let cardSection = $("#card-section");
@@ -38,7 +40,6 @@ function renderMovieData(data) {
 
         let mediaDiv = $("<div></div>");
         mediaDiv.attr("class", "card-content media");
-
 
         let mediaLeftDiv = $("<div></div>");
         mediaLeftDiv.attr("class", "media-left");
@@ -91,22 +92,24 @@ function renderMovieData(data) {
     }
 }
 
+
+
+//  Drink Modal
 function renderDrink(data){
     console.log(data);
 
-    //  Jeff Notes For Modal
+    //  Get a new drink if over 6 Ingredients
+    if ( data.drinks[0].strIngredient7) {
+        getAPIDrink();
+    }
 
     //  Clear Current Drink
     $(drinkDiv).text("");
 
-    //let drinkName = $("<div></div>");
-    //drinkName.attr("id", "displayDrink");
-    //drinkName.attr("style", "display:none;");
-    //drinkName.attr("role", "dialog");
-    drinkDiv.attr("title", "How To Make A " + data.drinks[0].strDrink);
+    $(drinkDiv).dialog("option", "title", "How To Make a " + data.drinks[0].strDrink);
 
     let drinkImage = $("<img />");
-    drinkImage.attr("style", "width: 25%;");
+    //drinkImage.attr("style", "width: 80%;");
     if (data.drinks[0].strDrinkThumb) {
         drinkImage.attr("src", data.drinks[0].strDrinkThumb);
     } else {
@@ -114,24 +117,41 @@ function renderDrink(data){
     }
     
     let drinkDetails = $("<p></p>");
-    //drinkDetails.attr("class", "");
-    drinkDetails.append(data.drinks[0].strInstructions);
+    drinkDetails.append("Instructions: <br />");
+    drinkDetails.append(data.drinks[0].strInstructions + "<br /><br />");
+    drinkDetails.append("Best served in a " + data.drinks[0].strGlass);
 
-    //drinkName.append(data.drinks[0].strDrink);
-
-    //drinkImage.appendTo(drinkName);
-    //drinkDetails.appendTo(drinkName);
+    //  Get Drink Ingredients and 
+    let drinkIngredients = $("<p></p>");
+    drinkIngredients.append("Ingredients: <br />");
+    if ( data.drinks[0].strIngredient1 ) {
+        drinkIngredients.append("1) " + data.drinks[0].strMeasure1 + ": " + data.drinks[0].strIngredient1 + "<br />");
+    }
+    if ( data.drinks[0].strIngredient2 ) {
+        drinkIngredients.append("2) " + data.drinks[0].strMeasure2 + ": " + data.drinks[0].strIngredient2 + "<br />");
+    }
+    if ( data.drinks[0].strIngredient3 ) {
+        drinkIngredients.append("3) " + data.drinks[0].strMeasure3 + ": " + data.drinks[0].strIngredient3 + "<br />");
+    }
+    if ( data.drinks[0].strIngredient4 ) {
+        drinkIngredients.append("4) " + data.drinks[0].strMeasure4 + ": " + data.drinks[0].strIngredient4 + "<br />");
+    }
+    if ( data.drinks[0].strIngredient5 ) {
+        drinkIngredients.append("5) " + data.drinks[0].strMeasure5 + ": " + data.drinks[0].strIngredient5 + "<br />");
+    }
+    if ( data.drinks[0].strIngredient6 ) {
+        drinkIngredients.append("6) " + data.drinks[0].strMeasure6 + ": " + data.drinks[0].strIngredient6 + "<br />");
+    }
+    drinkIngredients.append("<br/>");
     
-    $(drinkDiv).text(drinkImage);
-    //drinkDiv.find('.modal-title').text("How To Make A " + data.drinks[0].strDrink);
-    //$(drinkDiv).text("title", "How To Make A " + data.drinks[0].strDrink);
-    $(drinkDiv).text(data.drinks[0].strInstructions);
+    $(drinkDiv).append(drinkImage);
+    $(drinkDiv).append(drinkIngredients);
+    $(drinkDiv).append(drinkDetails);
 
-    //drinkDiv.append(drinkName);
 }
 
 
-
+//  Drink API
 function getAPIDrink() {
     let drinkAPI = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
 
@@ -167,6 +187,8 @@ function getAPIMovieData(genreIDs, currentPage) {
         });
 }
 
+
+//  Movie Detail API 
 function getAPIMovieDetails() {
     let movieDetailAPI = "https://developers.themoviedb.org/3/movies/get-movie-details?api_key=0d37b66cfda3facaf7d62b81d68fd669&language=en-US&"
 }
@@ -176,6 +198,7 @@ function changePage(currentPage) {
 }
 
 
+
 //  Search Button Listener
 $(".genreButton").click(function () {
     console.log($(this).val());
@@ -183,13 +206,14 @@ $(".genreButton").click(function () {
 });
 
 
+
 //  Drink Modal
 $( function() {
     $("#displayDrink").dialog({
         modal: true,
         autoOpen: false,
-        width: 700,
-        height: 700
+        width: 375,
+        height: 750
     });
     $("#getDrinkButton").click(function () {
         getAPIDrink();
@@ -197,10 +221,5 @@ $( function() {
     });
 });
 
-
-//$("#getDrinkButton").click(function () {
-//    console.log($(this).val());
-//    getAPIDrink();
-//});
 
 
