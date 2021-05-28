@@ -57,6 +57,11 @@ function renderMovieData(data) {
         let mediaRightDiv = $("<div></div>");
         mediaRightDiv.attr("class", "media-content");
 
+        let saveButton = $("<button></button>");
+        saveButton.attr("class", "button is-link is-outlined");
+        saveButton.attr("value", data.results[i].id);
+        saveButton.append("Save");
+
         let mediaTitle = $("<p></p>");
         mediaTitle.attr("class", "title is-4");
         mediaTitle.append(data.results[i].title);
@@ -70,6 +75,7 @@ function renderMovieData(data) {
         $(movieImage).appendTo(figureImage);
         $(figureImage).appendTo(mediaLeftDiv);
 
+        $(saveButton).appendTo(mediaTitle);
         $(mediaTitle).appendTo(mediaRightDiv);
         $(mediaContent).appendTo(mediaRightDiv);
 
@@ -82,12 +88,12 @@ function renderMovieData(data) {
 }
 
 //  Fetch API Movie Data
-function getAPIMovieData(genreIDs,currentPage) {
+function getAPIMovieData(genreIDs, currentPage) {
     console.log(currentPage);
     if (currentPage === "") {
         currentPage = 1;
     }
-    let movieAPI = "https://api.themoviedb.org/3/discover/movie?api_key=0d37b66cfda3facaf7d62b81d68fd669&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + currentPage +"&primary_release_date.gte=2000-01-01&primary_release_date.lte=2020-12-31&vote_average.gte=6&with_genres=" + genreIDs + "";
+    let movieAPI = "https://api.themoviedb.org/3/discover/movie?api_key=0d37b66cfda3facaf7d62b81d68fd669&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + currentPage + "&primary_release_date.gte=2000-01-01&primary_release_date.lte=2020-12-31&vote_average.gte=6&with_genres=" + genreIDs + "";
     console.log(movieAPI);
     fetch(movieAPI)
         .then(function (response) {
@@ -101,7 +107,7 @@ function getAPIMovieData(genreIDs,currentPage) {
         });
 }
 
-function getAPIMovieDetails(){
+function getAPIMovieDetails() {
     let movieDetailAPI = "https://developers.themoviedb.org/3/movies/get-movie-details?api_key=0d37b66cfda3facaf7d62b81d68fd669&language=en-US&"
 }
 
