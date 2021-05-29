@@ -1,0 +1,18 @@
+#displayDrink {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    /* background-color: #3298dc; */
+}
+
+.modal-title {
+    color: white;
+    background-color: #3298dc;
+}
+
+.drink-text {
+    color: #3298dc;
+}
+
+.drink-images {
+    border-radius: 10px;
+
+}

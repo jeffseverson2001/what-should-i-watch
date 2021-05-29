@@ -1,6 +1,6 @@
 //  Get HTML Elements
 let buttonBlock = $(".buttons");
-let drinkDiv = $(".modal");
+let drinkDiv = $("#displayDrink");
 
 
 
@@ -107,9 +107,11 @@ function renderDrink(data){
     $(drinkDiv).text("");
 
     $(drinkDiv).dialog("option", "title", "How To Make a " + data.drinks[0].strDrink);
+    // $(drinkDiv).dialog("options", "dialogClass", "modal-title");
 
     let drinkImage = $("<img />");
-    //drinkImage.attr("style", "width: 80%;");
+    // drinkImage.attr("style", "width: 80%;");
+    drinkImage.attr("class", "drink-images")
     if (data.drinks[0].strDrinkThumb) {
         drinkImage.attr("src", data.drinks[0].strDrinkThumb);
     } else {
@@ -117,12 +119,14 @@ function renderDrink(data){
     }
     
     let drinkDetails = $("<p></p>");
+    drinkDetails.attr("class", "drink-text");
     drinkDetails.append("Instructions: <br />");
     drinkDetails.append(data.drinks[0].strInstructions + "<br /><br />");
     drinkDetails.append("Best served in a " + data.drinks[0].strGlass);
 
     //  Get Drink Ingredients and 
     let drinkIngredients = $("<p></p>");
+    drinkIngredients.attr("class", "drink-text");
     drinkIngredients.append("Ingredients: <br />");
     if ( data.drinks[0].strIngredient1 ) {
         drinkIngredients.append("1) " + data.drinks[0].strMeasure1 + ": " + data.drinks[0].strIngredient1 + "<br />");
@@ -209,15 +213,15 @@ $(".genreButton").click(function () {
 
 //  Drink Modal
 $( function() {
-    $(".modal").dialog({
+    $("#displayDrink").dialog({
         modal: true,
         autoOpen: false,
-        width: 375,
+        width: 500,
         height: 750
     });
     $("#getDrinkButton").click(function () {
         getAPIDrink();
-        $(".modal").dialog("open");
+        $("#displayDrink").dialog("open");
     });
 });
 
