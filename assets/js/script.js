@@ -1,6 +1,6 @@
 //  Get HTML Elements
 let buttonBlock = $(".buttons");
-let drinkDiv = $("#displayDrink");
+let drinkDiv = $(".modal");
 
 
 
@@ -209,7 +209,7 @@ $(".genreButton").click(function () {
 
 //  Drink Modal
 $( function() {
-    $("#displayDrink").dialog({
+    $(".modal").dialog({
         modal: true,
         autoOpen: false,
         width: 375,
@@ -217,7 +217,7 @@ $( function() {
     });
     $("#getDrinkButton").click(function () {
         getAPIDrink();
-        $("#displayDrink").dialog("open");
+        $(".modal").dialog("open");
     });
 });
 
