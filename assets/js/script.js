@@ -7,9 +7,7 @@ let drinkDiv = $("#displayDrink");
 //  Place Movie Data On Page
 function renderMovieData(data, genreIDs) {
     let cardSection = $("#card-section");
-    //console.log(cardSection);
     console.log(data);
-    //console.log(genreIDs);
 
     $("#card-section").html("<p class=\"subtitle is-3\">Your Recommendations</p>");
 
@@ -99,21 +97,18 @@ function renderMovieData(data, genreIDs) {
         //  Create save movie button
         let saveButton = $("<button></button>");
         saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap");
-        //  Steve - I think we need to add the JSON string to send to local storage here.
+        //  Steve - This is the button to add the listener too.  I think it would be best to have this button send all of <data> to a save function for local storage here.
         saveButton.attr("value", data.results[i].id);
         saveButton.append("Save");
 
         let mediaTitle = $("<p></p>");
         mediaTitle.attr("class", "title is-4 is-flex is-justify-content-space-between");
-        //mediaTitle.append(data.results[i].title);
-        //mediaTitle.append(" ::: id: " + data.results[i].id);
 
         let mediaTitleLink = $("<a></a>");
         mediaTitleLink.attr("class", "movieDetails");
         //mediaTitleLink.attr("class", "title is-4 is-flex is-justify-content-space-between");
         mediaTitleLink.attr("value", data.results[i].id);
         mediaTitleLink.append(data.results[i].title);
-        //mediaTitleLink.append(" ::: id: " + data.results[i].id);
         mediaTitleLink.appendTo(mediaTitle);
 
         let mediaContent = $("<p></p>");
@@ -245,7 +240,7 @@ function renderDrink(data) {
     console.log(data);
 
     //  Get a new drink if over 6 Ingredients
-    if (data.drinks[0].strIngredient7) {
+    if ( data.drinks[0].strIngredient7) {
         getAPIDrink();
     }
 
@@ -261,6 +256,8 @@ function renderDrink(data) {
     } else {
         drinkImage.attr("src", "");
     }
+
+
 
     let drinkDetails = $("<p></p>");
     drinkDetails.append("Instructions: <br />");
@@ -390,13 +387,13 @@ function getAPIMovieDetails(genreIDs, id, currentPage) {
 
 //  Search Button Listener
 $(".genreButton").click(function () {
-    //console.log($(this).val());
     movies = getAPIMovieData($(this).val());
 });
 
 
+
 //  Drink Modal
-$(function () {
+$( function() {
     $("#displayDrink").dialog({
         modal: true,
         autoOpen: false,
@@ -408,5 +405,6 @@ $(function () {
         $("#displayDrink").dialog("open");
     });
 });
+
 
 
