@@ -109,12 +109,11 @@ function renderMovieData(data, genreIDs) {
         //mediaTitle.append(" ::: id: " + data.results[i].id);
 
         let mediaTitleLink = $("<a></a>");
-        mediaTitleLink.attr("id", "movieDetails" + i);
+        mediaTitleLink.attr("class", "movieDetails");
         //mediaTitleLink.attr("class", "title is-4 is-flex is-justify-content-space-between");
-        mediaTitleLink.attr("href", "#");
         mediaTitleLink.attr("value", data.results[i].id);
         mediaTitleLink.append(data.results[i].title);
-        mediaTitleLink.append(" ::: id: " + data.results[i].id);
+        //mediaTitleLink.append(" ::: id: " + data.results[i].id);
         mediaTitleLink.appendTo(mediaTitle);
 
         let mediaContent = $("<p></p>");
@@ -140,18 +139,17 @@ function renderMovieData(data, genreIDs) {
     //  Event listeners for back and next buttons
     $("#pageUpButton").click(function () {
         console.log($(this).val());
-        movies = getAPIMovieData(genreIDs, $(this).val());
+        getAPIMovieData(genreIDs, $(this).val());
     });
 
     $("#pageDownButton").click(function () {
         console.log($(this).val());
-        movies = getAPIMovieData(genreIDs, $(this).val());
+        getAPIMovieData(genreIDs, $(this).val());
     });
 
-    //  This does not work right now - Jeff
-    $("#movieDetails").click(function () {
-        console.log($(this).val());
-        getAPIMovieDetails($(this).val()) 
+    $(".movieDetails").click(function () {
+        console.log(genreIDs, $(this).attr("value"), currentPage);
+        getAPIMovieDetails(genreIDs, $(this).attr("value"), currentPage)
     });
 
 }
@@ -159,18 +157,87 @@ function renderMovieData(data, genreIDs) {
 
 
 //  Movie Detail Display
-function renderMovieDetails(data) {
+function renderMovieDetails(data, genreIDs, currentPage) {
     let cardSection = $("#card-section");
-    //console.log(cardSection);
     console.log(data);
-    //console.log(genreIDs);
+    console.log(genreIDs);
 
-    $("#card-section").html("<p class=\"subtitle is-3\">Your Recommendations</p>");
+    $("#card-section").html("<p class=\"subtitle is-3\">" + data.title + "</p>");
 
-    let baseImageURL = "https://image.tmdb.org/t/p/w92";
+    let baseImageURL = "https://image.tmdb.org/t/p/w342";
 
+
+    //  Create div media-content for movie
+    let cardDiv = $("<div></div>");
+    cardDiv.attr("class", "card mb-2");
+
+    let mediaDiv = $("<div></div>");
+    mediaDiv.attr("class", "card-content media");
+
+    let mediaLeftDiv = $("<div></div>");
+    mediaLeftDiv.attr("class", "media-left");
+
+    let figureImage = $("<figure></figure>");
+    figureImage.attr("class", "image is-100x150");
+
+    let movieImage = $("<img />");
+    if (data.poster_path) {
+        movieImage.attr("src", baseImageURL + data.poster_path);
+    } else {
+        movieImage.attr("src", "");
+    }
+    movieImage.attr("alt", data.title + " Poster Image");
+
+    let mediaRightDiv = $("<div></div>");
+    mediaRightDiv.attr("class", "media-content");
+
+    //  Create save movie button
+    let saveButton = $("<button></button>");
+    saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap");
+    //  Steve - I think we need to add the JSON string to send to local storage here.
+    saveButton.attr("value", data.id);
+    saveButton.append("Save");
+
+    let mediaTitle = $("<p></p>");
+    mediaTitle.attr("class", "title is-4 is-flex is-justify-content-space-between");
+    mediaTitle.append(data.title + " - " + data.tagline);
+
+    let mediaContent = $("<p></p>");
+    mediaContent.attr("class", "content is-6");
+    mediaContent.append(data.overview + "<br /><br />");
+    mediaContent.append("Released: " + data.release_date + "<br />");
+    mediaContent.append("Runtime: " + data.runtime + "<br />");
+    mediaContent.append("Website: <a href=\"" + data.homepage + "\">" + data.homepage + "</a><br />");
+
+    //  Create back to results button
+    let backButton = $("<button></button>");
+    backButton.attr("id", "backToMovieList");
+    backButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap");
+    backButton.append("Return");
+
+    //  Place movie elements to card-content div
+    $(movieImage).appendTo(figureImage);
+    $(figureImage).appendTo(mediaLeftDiv);
+
+    $(saveButton).appendTo(mediaTitle);
+    $(backButton).appendTo(mediaTitle);
+    $(mediaTitle).appendTo(mediaRightDiv);
+    $(mediaContent).appendTo(mediaRightDiv);
+
+    $(mediaLeftDiv).appendTo(mediaDiv);
+    $(mediaRightDiv).appendTo(mediaDiv);
+
+    $(mediaDiv).appendTo(cardDiv);
     cardSection.append(cardDiv);
+
+    //  Return Button Listener
+    $("#backToMovieList").click(function () {
+        console.log($(this).val());
+        console.log(genreIDs);
+        getAPIMovieData(genreIDs, currentPage);
+    });
 }
+
 
 
 //  Drink Modal
@@ -302,21 +369,20 @@ function getAPIMovieData(genreIDs, newPage) {
 
 
 //  Movie Detail API 
-function getAPIMovieDetails(id) {
-
-    console.log("AT MOVE" + id);
+function getAPIMovieDetails(genreIDs, id, currentPage) {
 
     let movieDetailAPI = "https://api.themoviedb.org/3/movie/" + id + "?api_key=0d37b66cfda3facaf7d62b81d68fd669";
+    console.log(movieDetailAPI);
     fetch(movieDetailAPI)
-    .then(function (response){
-        if (response.status !== 200) {
-            console.log(response.status);
-        }
-        return response.json();
-    })
-    .then(function (data) {
-        renderMovieDetails(data);
-    });
+        .then(function (response) {
+            if (response.status !== 200) {
+                console.log(response.status);
+            }
+            return response.json();
+        })
+        .then(function (data) {
+            renderMovieDetails(data, genreIDs, currentPage);
+        });
     //  "https://developers.themoviedb.org/3/getting-started/append-to-response";
 }
 
@@ -342,6 +408,5 @@ $(function () {
         $("#displayDrink").dialog("open");
     });
 });
-
 
 
