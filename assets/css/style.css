@@ -1,6 +1,7 @@
 #displayDrink {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     /* background-color: #3298dc; */
+    position: relative;
 }
 
 .modal-title {
@@ -14,5 +15,5 @@
 
 .drink-images {
     border-radius: 10px;
-
+    border: #3298dc 10px solid;
 }
