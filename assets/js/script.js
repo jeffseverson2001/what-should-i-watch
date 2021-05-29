@@ -107,10 +107,8 @@ function renderDrink(data){
     $(drinkDiv).text("");
 
     $(drinkDiv).dialog("option", "title", "How To Make a " + data.drinks[0].strDrink);
-    // $(drinkDiv).dialog("options", "dialogClass", "modal-title");
 
     let drinkImage = $("<img />");
-    // drinkImage.attr("style", "width: 80%;");
     drinkImage.attr("class", "drink-images")
     if (data.drinks[0].strDrinkThumb) {
         drinkImage.attr("src", data.drinks[0].strDrinkThumb);
