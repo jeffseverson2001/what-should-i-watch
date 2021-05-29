@@ -216,8 +216,8 @@ $( function() {
     $("#displayDrink").dialog({
         modal: true,
         autoOpen: false,
-        width: 500,
-        height: 750
+        width: 1000,
+        height: 500
     });
     $("#getDrinkButton").click(function () {
         getAPIDrink();
