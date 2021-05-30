@@ -249,14 +249,26 @@ function renderMovieDetails(data, genreIDs, currentPage) {
 //  Write data to local storage
 function writeToLocalStorage(genreIDs, newSavedMovie) {
     console.log(newSavedMovie);
-    newSavedItems = [];
+    let dupeMovie = 0;
+    let newSavedItems = [];
     let savedItems = JSON.parse(localStorage.getItem("savedItems"));
     if (savedItems) {
         console.log(savedItems);
-        newSavedItems.push(savedItems);
-        newSavedItems.push(newSavedMovie);
+        for (let i = 0; i < savedItems.length; i++){
+            if ($(inArray(newSavedMovie[i]))) {
+                console.log("DUPE MOVIE");
+                dupeMovie++;
+            } else {
+                savedItems.push(newSavedMovie);
+                newSavedItems = savedItems;
+            }
+            if (dupeMovie > 1){
+                savedItems.push(newSavedMovie);
+                newSavedItems = savedItems;
+            }
+        }
     } else {
-        newSavedItems = newSavedMovie;
+        newSavedItems.push(newSavedMovie);
     }
     
     localStorage.setItem("savedItems", JSON.stringify(newSavedItems));
