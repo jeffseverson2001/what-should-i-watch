@@ -6,7 +6,8 @@
     background: whitesmoke;
 }
 
-.modal-title {
+.modal-title,
+.ui-dialog-titlebar {
     color: white;
     background-color: #3298dc;
 }
