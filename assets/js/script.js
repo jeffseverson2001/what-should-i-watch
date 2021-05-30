@@ -246,6 +246,87 @@ function renderMovieDetails(data, genreIDs, currentPage) {
 
 
 
+//  Place Saved Movie Data On Page
+function renderSavedMovieData(data) {
+    let cardSection = $("#card-section");
+    console.log(data);
+
+    //console.log(JSON.parse(data[0]));
+    //savedMovieList = JSON.parse(data[0]);
+    //console.log(savedMovieList);
+
+    $("#card-section").html("<p class=\"subtitle is-3\">Your Saved Movie List</p>");
+
+    let baseImageURL = "https://image.tmdb.org/t/p/w92";
+
+    //  Loop through API movie results
+    for (i = 0; i < data.length; i++) {
+
+        savedMovieList = JSON.parse(data[i]);
+        //console.log(savedMovieList);
+
+        //  Create div media-content for movie
+        let cardDiv = $("<div></div>");
+        cardDiv.attr("class", "card mb-2");
+
+        let mediaDiv = $("<div></div>");
+        mediaDiv.attr("class", "card-content media");
+
+        let mediaLeftDiv = $("<div></div>");
+        mediaLeftDiv.attr("class", "media-left");
+
+        let figureImage = $("<figure></figure>");
+        figureImage.attr("class", "image is-100x150");
+
+        let movieImage = $("<img />");
+        if (savedMovieList.poster_path) {
+            movieImage.attr("src", baseImageURL + savedMovieList.poster_path);
+        } else {
+            movieImage.attr("src", "");
+        }
+        movieImage.attr("alt", savedMovieList.title + " Poster Image");
+
+        let mediaRightDiv = $("<div></div>");
+        mediaRightDiv.attr("class", "media-content");
+
+        let mediaTitle = $("<p></p>");
+        mediaTitle.attr("class", "title is-4 is-flex is-justify-content-space-between");
+
+        let mediaTitleLink = $("<a></a>");
+        mediaTitleLink.attr("class", "movieDetails");
+        //mediaTitleLink.attr("class", "title is-4 is-flex is-justify-content-space-between");
+        mediaTitleLink.attr("value", savedMovieList.id);
+        mediaTitleLink.append(savedMovieList.title);
+        mediaTitleLink.appendTo(mediaTitle);
+
+        let mediaContent = $("<p></p>");
+        mediaContent.attr("class", "content is-6");
+        mediaContent.append(savedMovieList.overview);
+
+
+        //  Place movie elements to card-content div
+        $(movieImage).appendTo(figureImage);
+        $(figureImage).appendTo(mediaLeftDiv);
+
+        $(mediaTitle).appendTo(mediaRightDiv);
+        $(mediaContent).appendTo(mediaRightDiv);
+
+        $(mediaLeftDiv).appendTo(mediaDiv);
+        $(mediaRightDiv).appendTo(mediaDiv);
+
+        $(mediaDiv).appendTo(cardDiv);
+        cardSection.append(cardDiv);
+    }
+
+    genreIDs = "LOCAL";
+    //  Event listeners for back and next buttons
+    $(".movieDetails").click(function () {
+        console.log(genreIDs, $(this).attr("value"), currentPage);
+        getAPIMovieDetails(genreIDs, $(this).attr("value"), currentPage)
+    });
+}
+
+
 //  Write data to local storage
 function writeToLocalStorage(genreIDs, newSavedMovie) {
     console.log(newSavedMovie);
@@ -259,20 +340,19 @@ function writeToLocalStorage(genreIDs, newSavedMovie) {
     } else {
         newSavedItems.push(newSavedMovie);
     }
-
-
-
-
     localStorage.setItem("savedItems", JSON.stringify(newSavedItems));
 }
 
-// Get Saved Items
 
+
+// Get Saved Items
 function getSavedMovie(){
     let savedMovies = JSON.parse(localStorage.getItem("savedItems"));
-    //return savedMovies;
     console.log(savedMovies);
+    renderSavedMovieData(savedMovies);
 }
+
+
 
 //  Drink Modal
 function renderDrink(data) {
