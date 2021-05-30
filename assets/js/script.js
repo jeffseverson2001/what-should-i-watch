@@ -95,10 +95,16 @@ function renderMovieData(data, genreIDs) {
         mediaRightDiv.attr("class", "media-content");
 
         //  Create save movie button
+        let saveMovieData = {
+            id: data.results[i].id,
+            title: data.results[i].title,
+            poster_path: data.results[i].poster_path,
+            overview: data.results[i].overview
+        };
+
         let saveButton = $("<button></button>");
-        saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap");
-        //  Steve - This is the button to add the listener too.  I think it would be best to have this button send all of <data> to a save function for local storage here.
-        saveButton.attr("value", data.results[i].id);
+        saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap saveButton");
+        saveButton.attr("value", JSON.stringify(saveMovieData));
         saveButton.append("Save");
 
         let mediaTitle = $("<p></p>");
@@ -147,6 +153,11 @@ function renderMovieData(data, genreIDs) {
         getAPIMovieDetails(genreIDs, $(this).attr("value"), currentPage)
     });
 
+    $(".saveButton").click(function () {
+        //console.log($(this).val());
+        writeToLocalStorage(genreIDs, $(this).val());
+    });
+
 }
 
 
@@ -188,9 +199,9 @@ function renderMovieDetails(data, genreIDs, currentPage) {
 
     //  Create save movie button
     let saveButton = $("<button></button>");
-    saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap");
-    //  Steve - I think we need to add the JSON string to send to local storage here.
+    saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap saveButton");
     saveButton.attr("value", data.id);
+    saveButton.attr("disabled");
     saveButton.append("Save");
 
     let mediaTitle = $("<p></p>");
@@ -235,12 +246,125 @@ function renderMovieDetails(data, genreIDs, currentPage) {
 
 
 
+//  Place Saved Movie Data On Page
+function renderSavedMovieData(data) {
+    let cardSection = $("#card-section");
+
+    console.log(data);
+
+    $("#card-section").html("<p class=\"subtitle is-3\">Your Saved Movie List</p>");
+
+    let baseImageURL = "https://image.tmdb.org/t/p/w92";
+    let dupeMovie = 0;
+
+    //  Loop through API movie results
+    for (i = 0; i < data.length; i++) {
+
+        savedMovieList = JSON.parse(data[i]);
+
+        //console.log(savedMovieList);
+
+        //  Create div media-content for movie
+        
+            let cardDiv = $("<div></div>");
+            cardDiv.attr("class", "card mb-2");
+
+            let mediaDiv = $("<div></div>");
+            mediaDiv.attr("class", "card-content media");
+
+            let mediaLeftDiv = $("<div></div>");
+            mediaLeftDiv.attr("class", "media-left");
+
+            let figureImage = $("<figure></figure>");
+            figureImage.attr("class", "image is-100x150");
+
+            let movieImage = $("<img />");
+            if (savedMovieList.poster_path) {
+                movieImage.attr("src", baseImageURL + savedMovieList.poster_path);
+            } else {
+                movieImage.attr("src", "");
+            }
+            movieImage.attr("alt", savedMovieList.title + " Poster Image");
+
+            let mediaRightDiv = $("<div></div>");
+            mediaRightDiv.attr("class", "media-content");
+
+            let mediaTitle = $("<p></p>");
+            mediaTitle.attr("class", "title is-4 is-flex is-justify-content-space-between");
+
+            let mediaTitleLink = $("<a></a>");
+            mediaTitleLink.attr("class", "movieDetails");
+            //mediaTitleLink.attr("class", "title is-4 is-flex is-justify-content-space-between");
+            mediaTitleLink.attr("value", savedMovieList.id);
+            mediaTitleLink.append(savedMovieList.title);
+            mediaTitleLink.appendTo(mediaTitle);
+
+            let mediaContent = $("<p></p>");
+            mediaContent.attr("class", "content is-6");
+            mediaContent.append(savedMovieList.overview);
+
+
+            //  Place movie elements to card-content div
+            $(movieImage).appendTo(figureImage);
+            $(figureImage).appendTo(mediaLeftDiv);
+
+            $(mediaTitle).appendTo(mediaRightDiv);
+            $(mediaContent).appendTo(mediaRightDiv);
+
+            $(mediaLeftDiv).appendTo(mediaDiv);
+            $(mediaRightDiv).appendTo(mediaDiv);
+
+            $(mediaDiv).appendTo(cardDiv);
+            cardSection.append(cardDiv);
+        
+        
+    }
+
+    genreIDs = "LOCAL";
+    //  Event listeners for back and next buttons
+    $(".movieDetails").click(function () {
+        console.log(genreIDs, $(this).attr("value"), currentPage);
+        getAPIMovieDetails(genreIDs, $(this).attr("value"), currentPage)
+    });
+}
+
+
+//  Write data to local storage
+function writeToLocalStorage(genreIDs, newSavedMovie) {
+    console.log(newSavedMovie);
+    let newSavedItems = [];
+    let savedItems = JSON.parse(localStorage.getItem("savedItems"));
+    if (savedItems) {
+        if (newSavedMovie.search(savedItems)) {
+            console.log(savedItems);
+            savedItems.push(newSavedMovie);
+            newSavedItems = savedItems;
+        }
+
+
+    } else {
+        newSavedItems.push(newSavedMovie);
+    }
+    localStorage.setItem("savedItems", JSON.stringify(newSavedItems));
+}
+
+
+
+// Get Saved Items
+function getSavedMovie() {
+    let savedMovies = JSON.parse(localStorage.getItem("savedItems"));
+    console.log(savedMovies);
+    renderSavedMovieData(savedMovies);
+}
+
+
+
 //  Drink Modal
 function renderDrink(data) {
     console.log(data);
 
     //  Get a new drink if over 6 Ingredients
-    if ( data.drinks[0].strIngredient7) {
+    if (data.drinks[0].strIngredient7) {
         getAPIDrink();
     }
 
@@ -392,10 +516,14 @@ $(".genreButton").click(function () {
     movies = getAPIMovieData($(this).val());
 });
 
+// view saved movies
+$("#savedList").click(function () {
+    getSavedMovie();
+});
 
 
 //  Drink Modal
-$( function() {
+$(function () {
     $("#displayDrink").dialog({
         modal: true,
         autoOpen: false,
