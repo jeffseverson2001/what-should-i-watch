@@ -96,7 +96,7 @@ function renderMovieData(data, genreIDs) {
 
         //  Create save movie button
         let saveButton = $("<button></button>");
-        saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap");
+        saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap saveButton");
         //  Steve - This is the button to add the listener too.  I think it would be best to have this button send all of <data> to a save function for local storage here.
         saveButton.attr("value", data.results[i].id);
         saveButton.append("Save");
@@ -145,6 +145,11 @@ function renderMovieData(data, genreIDs) {
     $(".movieDetails").click(function () {
         console.log(genreIDs, $(this).attr("value"), currentPage);
         getAPIMovieDetails(genreIDs, $(this).attr("value"), currentPage)
+    });
+
+    $(".saveButton").click(function () {
+        console.log(genreIDs, $(this).attr("value"), currentPage);
+        writetoLocalStorage(genreIDs, $(this).attr("value"));
     });
 
 }
@@ -231,6 +236,13 @@ function renderMovieDetails(data, genreIDs, currentPage) {
         console.log(genreIDs);
         getAPIMovieData(genreIDs, currentPage);
     });
+}
+
+
+
+//  Write data to local storage
+function writetoLocalStorage(data) {
+    console.log(data);
 }
 
 
