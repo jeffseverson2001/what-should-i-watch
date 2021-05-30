@@ -95,10 +95,16 @@ function renderMovieData(data, genreIDs) {
         mediaRightDiv.attr("class", "media-content");
 
         //  Create save movie button
+        let saveMovieData = {      
+                id: data.results[i].id,
+                title: data.results[i].title,
+                poster_path: data.results[i].poster_path,
+                overview: data.results[i].overview
+        };
+        
         let saveButton = $("<button></button>");
         saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap saveButton");
-        //  Steve - This is the button to add the listener too.  I think it would be best to have this button send all of <data> to a save function for local storage here.
-        saveButton.attr("value", data.results[i].id);
+        saveButton.attr("value", JSON.stringify(saveMovieData));
         saveButton.append("Save");
 
         let mediaTitle = $("<p></p>");
@@ -148,8 +154,8 @@ function renderMovieData(data, genreIDs) {
     });
 
     $(".saveButton").click(function () {
-        console.log(genreIDs, $(this).attr("value"), currentPage);
-        writetoLocalStorage(genreIDs, $(this).attr("value"));
+        console.log($(this).val());
+        writeToLocalStorage(genreIDs, $(this).val());
     });
 
 }
@@ -193,9 +199,9 @@ function renderMovieDetails(data, genreIDs, currentPage) {
 
     //  Create save movie button
     let saveButton = $("<button></button>");
-    saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap");
-    //  Steve - I think we need to add the JSON string to send to local storage here.
+    saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap saveButton");
     saveButton.attr("value", data.id);
+    saveButton.attr("disabled");
     saveButton.append("Save");
 
     let mediaTitle = $("<p></p>");
@@ -241,9 +247,13 @@ function renderMovieDetails(data, genreIDs, currentPage) {
 
 
 //  Write data to local storage
-function writetoLocalStorage(data) {
-    console.log(data);
-}
+function writeToLocalStorage(genreIDs, newSavedMovie) {
+    console.log(newSavedMovie);
+    let savedItems = JSON.parse(localStorage.getItem("savedItems"));
+    console.log(savedItems);
+    let newSavedItems = savedItems.push(newSavedMovie);
+    localStorage.setItem("savedItems", JSON.stringify(newSavedItems));
+ }
 
 
 
