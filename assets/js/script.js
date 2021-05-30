@@ -249,32 +249,30 @@ function renderMovieDetails(data, genreIDs, currentPage) {
 //  Write data to local storage
 function writeToLocalStorage(genreIDs, newSavedMovie) {
     console.log(newSavedMovie);
-    let dupeMovie = 0;
     let newSavedItems = [];
     let savedItems = JSON.parse(localStorage.getItem("savedItems"));
     if (savedItems) {
         console.log(savedItems);
-        for (let i = 0; i < savedItems.length; i++){
-            if ($(inArray(newSavedMovie[i]))) {
-                console.log("DUPE MOVIE");
-                dupeMovie++;
-            } else {
-                savedItems.push(newSavedMovie);
-                newSavedItems = savedItems;
-            }
-            if (dupeMovie > 1){
-                savedItems.push(newSavedMovie);
-                newSavedItems = savedItems;
-            }
-        }
+        savedItems.push(newSavedMovie);
+        newSavedItems = savedItems;
+        
     } else {
         newSavedItems.push(newSavedMovie);
     }
-    
+
+
+
+
     localStorage.setItem("savedItems", JSON.stringify(newSavedItems));
 }
 
+// Get Saved Items
 
+function getSavedMovie(){
+    let savedMovies = JSON.parse(localStorage.getItem("savedItems"));
+    //return savedMovies;
+    console.log(savedMovies);
+}
 
 //  Drink Modal
 function renderDrink(data) {
@@ -433,6 +431,10 @@ $(".genreButton").click(function () {
     movies = getAPIMovieData($(this).val());
 });
 
+// view saved movies
+$("#savedList").click(function () {
+    getSavedMovie();
+});
 
 
 //  Drink Modal
