@@ -95,13 +95,13 @@ function renderMovieData(data, genreIDs) {
         mediaRightDiv.attr("class", "media-content");
 
         //  Create save movie button
-        let saveMovieData = {      
-                id: data.results[i].id,
-                title: data.results[i].title,
-                poster_path: data.results[i].poster_path,
-                overview: data.results[i].overview
+        let saveMovieData = {
+            id: data.results[i].id,
+            title: data.results[i].title,
+            poster_path: data.results[i].poster_path,
+            overview: data.results[i].overview
         };
-        
+
         let saveButton = $("<button></button>");
         saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap saveButton");
         saveButton.attr("value", JSON.stringify(saveMovieData));
@@ -154,7 +154,7 @@ function renderMovieData(data, genreIDs) {
     });
 
     $(".saveButton").click(function () {
-        console.log($(this).val());
+        //console.log($(this).val());
         writeToLocalStorage(genreIDs, $(this).val());
     });
 
@@ -249,11 +249,18 @@ function renderMovieDetails(data, genreIDs, currentPage) {
 //  Write data to local storage
 function writeToLocalStorage(genreIDs, newSavedMovie) {
     console.log(newSavedMovie);
+    newSavedItems = [];
     let savedItems = JSON.parse(localStorage.getItem("savedItems"));
-    console.log(savedItems);
-    let newSavedItems = savedItems.push(newSavedMovie);
+    if (savedItems) {
+        console.log(savedItems);
+        newSavedItems.push(savedItems);
+        newSavedItems.push(newSavedMovie);
+    } else {
+        newSavedItems = newSavedMovie;
+    }
+    
     localStorage.setItem("savedItems", JSON.stringify(newSavedItems));
- }
+}
 
 
 
@@ -262,7 +269,7 @@ function renderDrink(data) {
     console.log(data);
 
     //  Get a new drink if over 6 Ingredients
-    if ( data.drinks[0].strIngredient7) {
+    if (data.drinks[0].strIngredient7) {
         getAPIDrink();
     }
 
@@ -417,7 +424,7 @@ $(".genreButton").click(function () {
 
 
 //  Drink Modal
-$( function() {
+$(function () {
     $("#displayDrink").dialog({
         modal: true,
         autoOpen: false,
