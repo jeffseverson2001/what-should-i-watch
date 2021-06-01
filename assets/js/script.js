@@ -112,7 +112,6 @@ function renderMovieData(data, genreIDs) {
 
         let mediaTitleLink = $("<a></a>");
         mediaTitleLink.attr("class", "movieDetails");
-        //mediaTitleLink.attr("class", "title is-4 is-flex is-justify-content-space-between");
         mediaTitleLink.attr("value", data.results[i].id);
         mediaTitleLink.append(data.results[i].title);
         mediaTitleLink.appendTo(mediaTitle);
@@ -197,13 +196,6 @@ function renderMovieDetails(data, genreIDs, currentPage) {
     let mediaRightDiv = $("<div></div>");
     mediaRightDiv.attr("class", "media-content");
 
-    //  Create save movie button
-    let saveButton = $("<button></button>");
-    saveButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap saveButton");
-    saveButton.attr("value", data.id);
-    saveButton.attr("disabled");
-    saveButton.append("Save");
-
     let mediaTitle = $("<p></p>");
     mediaTitle.attr("class", "title is-4 is-flex is-justify-content-space-between");
     mediaTitle.append(data.title + " - " + data.tagline);
@@ -213,7 +205,7 @@ function renderMovieDetails(data, genreIDs, currentPage) {
     mediaContent.append(data.overview + "<br /><br />");
     mediaContent.append("Released: " + data.release_date + "<br />");
     mediaContent.append("Runtime: " + data.runtime + "<br />");
-    mediaContent.append("Website: <a href=\"" + data.homepage + "\">" + data.homepage + "</a><br />");
+    mediaContent.append("Website: <a href=\"" + data.homepage + "\" target=\"_blank\">" + data.homepage + "</a><br />");
 
     //  Create back to results button
     let backButton = $("<button></button>");
@@ -225,7 +217,6 @@ function renderMovieDetails(data, genreIDs, currentPage) {
     $(movieImage).appendTo(figureImage);
     $(figureImage).appendTo(mediaLeftDiv);
 
-    $(saveButton).appendTo(mediaTitle);
     $(backButton).appendTo(mediaTitle);
     $(mediaTitle).appendTo(mediaRightDiv);
     $(mediaContent).appendTo(mediaRightDiv);
@@ -240,7 +231,11 @@ function renderMovieDetails(data, genreIDs, currentPage) {
     $("#backToMovieList").click(function () {
         console.log($(this).val());
         console.log(genreIDs);
-        getAPIMovieData(genreIDs, currentPage);
+        if (genreIDs === "LOCAL") {
+            getSavedMovie();
+        } else {
+            getAPIMovieData(genreIDs, currentPage);
+        }
     });
 }
 
@@ -254,18 +249,24 @@ function renderSavedMovieData(data) {
 
     $("#card-section").html("<p class=\"subtitle is-3\">Your Saved Movie List</p>");
 
+    let clearButton = $("<button></button>");
+    clearButton.attr("class", "button is-link is-rounded is-flex-wrap-nowrap clearButton");
+    clearButton.append("Clear");
+
+    clearButton.appendTo("#card-section");
+
     let baseImageURL = "https://image.tmdb.org/t/p/w92";
-    let dupeMovie = 0;
 
     //  Loop through API movie results
-    for (i = 0; i < data.length; i++) {
+    if (data !== null) {
+        for (i = 0; i < data.length; i++) {
 
-        savedMovieList = JSON.parse(data[i]);
+            savedMovieList = JSON.parse(data[i]);
 
-        //console.log(savedMovieList);
+            //console.log(savedMovieList);
 
-        //  Create div media-content for movie
-        
+            //  Create div media-content for movie
+
             let cardDiv = $("<div></div>");
             cardDiv.attr("class", "card mb-2");
 
@@ -316,15 +317,29 @@ function renderSavedMovieData(data) {
 
             $(mediaDiv).appendTo(cardDiv);
             cardSection.append(cardDiv);
+
+        }
+    } else {
+
+        let cardDiv = $("<div></div>");
+        cardDiv.attr("class", "card mb-2");
+
+        let mediaDiv = $("<div></div>");
+        mediaDiv.attr("class", "card-content media");
+        mediaDiv.html("You Have No Saved Movies");
         
-        
+        $(mediaDiv).appendTo(cardDiv);
+        cardSection.append(cardDiv);
     }
 
-    genreIDs = "LOCAL";
+    $(".clearButton").click(function () {
+        localStorage.clear();
+    });
+
     //  Event listeners for back and next buttons
     $(".movieDetails").click(function () {
-        console.log(genreIDs, $(this).attr("value"), currentPage);
-        getAPIMovieDetails(genreIDs, $(this).attr("value"), currentPage)
+        //console.log(genreIDs, $(this).attr("value"), currentPage);
+        getAPIMovieDetails("LOCAL", $(this).attr("value"), 1)
     });
 }
 
@@ -493,6 +508,8 @@ function getAPIMovieData(genreIDs, newPage) {
 
 //  Movie Detail API 
 function getAPIMovieDetails(genreIDs, id, currentPage) {
+
+    console.log(genreIDs);
 
     let movieDetailAPI = "https://api.themoviedb.org/3/movie/" + id + "?api_key=0d37b66cfda3facaf7d62b81d68fd669";
     console.log(movieDetailAPI);
