@@ -3,7 +3,7 @@
 "What Should I Watch" is an app developed by Jeff Severson, Maren Hatling, Steve Siegel and Amira Holden.
 
 It is deployed at this link:
-https://amiracat.github.io/what-should-i-watch/
+https://jeffseverson2001.github.io/what-should-i-watch/
 
 This tool makes your day a little less stressful by recommending movies for you to watch and a drink to quench your thirst.
 
@@ -15,4 +15,4 @@ On the page, a user clicks on a movie genre on the left side and recommended mov
 
 Our team collaborated on this project, working with HTML, Bulma CSS classes, JavaScript, JQuery, the 2 APIs mentioned above and GitHub.
 
-Here's the link to the app again: https://amiracat.github.io/what-should-i-watch/
+Here's the link to the app again: https://jeffseverson2001.github.io/what-should-i-watch/
